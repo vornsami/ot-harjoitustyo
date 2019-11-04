@@ -5,4 +5,7 @@ Tämä repositio on *ohjelmistotekniikka*-kurssin laskuharjoitusten palautusta v
 __viikko 1__
 
 [gitlog.txt](/laskarit/viikko1/gitlog.txt)
+
 [komentorivi.txt](/laskarit/viikko1/komentorivi.txt)
+
+
