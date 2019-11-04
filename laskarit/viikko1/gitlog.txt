@@ -1,0 +1,97 @@
+commit 71e4982bdc1b0ea99f8a7c66cb6268cefa4b6e9e (HEAD -> master)
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 21:12:14 2019 +0200
+
+    done
+
+ tiedostoja/file2.txt                 | 0
+ tiedostoja/{file1.txt => file22.txt} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 4f41e511023ab4a31c1d1b28cf3cf8fc3ee8f022
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 21:07:38 2019 +0200
+
+    file
+
+ tiedostoja/file1.txt | 0
+ tiedostoja/file2.txt | 0
+ tiedostoja/file3.txt | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit cbe2a7736c8464d7e547293b320f41204b7fafd2
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:44:24 2019 +0200
+
+    desu
+
+ eka.txt    | 14 ++++++++------
+ kolmas.txt |  2 +-
+ 2 files changed, 9 insertions(+), 7 deletions(-)
+
+commit 1ed076525382b6ddaddf3f168c3a3a703f317835
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:36:29 2019 +0200
+
+    rename
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit c7f376e2594fc260614693ec62ea25e62c9a3631
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:33:29 2019 +0200
+
+    poisto
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit 617372e02fca13cc781cb586f9bba8e3b5cdc29b
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:31:58 2019 +0200
+
+    navy seal
+
+ tiedosto.txt | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+commit 0df016b4101b430ce43aa546093eec9564ed8f7c
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:18:00 2019 +0200
+
+    muutoksia ja kansio
+
+ kolmas.txt               | 1 +
+ stuff/jokin tiedosto.txt | 0
+ toinen.txt               | 1 +
+ 3 files changed, 2 insertions(+)
+
+commit c374bdb94c119911214ffe375214afd440261627
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:15:52 2019 +0200
+
+    lis<C3><A4>ys
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 6042c06b96172e024973745ec48985dc8bf3d42d
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 20:14:29 2019 +0200
+
+    muutos ja lis<C3><A4>ys
+
+ tiedosto.txt | 2 +-
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+commit 0269975944528cca7d48e8c56fba387c6dc1648d
+Author: vornsami <sami.vornanen@helsinki.fi>
+Date:   Sun Nov 3 19:40:59 2019 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 1 +
+ 1 file changed, 1 insertion(+)
+(END)                  
