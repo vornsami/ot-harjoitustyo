@@ -2,4 +2,7 @@
 
 Tämä repositio on *ohjelmistotekniikka*-kurssin laskuharjoitusten palautusta varten.
 
-[viikko 1](/laskarit/viikko1)
+__viikko 1__
+
+[gitlog.txt](/laskarit/viikko1/gitlog.txt)
+[komentorivi.txt](/laskarit/viikko1/komentorivi.txt)
