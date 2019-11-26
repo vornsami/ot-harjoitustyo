@@ -10,82 +10,91 @@ package people;
  * @author Sami
  */
 public class Person {
-    double sellLimit;
-    double buyLimit;
+    double[] sellLimit;
+    double[] buyLimit;
     double money;
     
-    public Person(double m){
-        sellLimit = -1;
-        buyLimit = -1;
-        
+    public Person(double m) {
         money = m;
     }
-    
-    public Person(double m, double b, double s){
+    public Person(double m, double[] b, double[] s) {
         sellLimit = s;
         buyLimit = b;
-        
         money = m;
     }
-    
-    public double getMoney(){
+    public double getMoney() {
         return money;
     }
-    
-    public double getBuyLimit(){
+    public double[] getAllBuyLimits() {
         return buyLimit;
     }
-    
-    public double getSellLimit(){
+    public double[] getAllSellLimits() {
         return sellLimit;
     }
-    
-    public void setBuyLimit(double b){
+    public double getBuyLimit(int i) {
+        return buyLimit[i];
+    }
+    public double getSellLimit(int i) {
+        return sellLimit[i];
+    }
+
+    /**
+     *
+     * @param b A list comprised of all limits.
+     */
+    public void setAllBuyLimits(double[] b) {
         buyLimit = b;
     }
-    
-    public void setSellLimit(double s){
+
+    /**
+     *
+     * @param s - A list comprised of all limits. Use value -1 to denote seller not selling said product.
+     */
+    public void setAllSellLimits(double[] s) {
         sellLimit = s;
     }
-    
-    public void setMoney(double m){
+    public void setBuyLimit(int i, double b) {
+        buyLimit[i] = b;
+    }
+    public void setSellLimit(int i, double s) {
+        sellLimit[i] = s;
+    }
+    public void setMoney(double m) {
         money = m;
     }
     
-    public boolean addMoney(double m){
-        if(-m > money)return false;
+    public boolean addMoney(double m) {
+        if (-m > money) {
+            return false;
+        }
         money += m;
         
         return true;
     }
-    
-    public boolean tryBuy(double m){
-        if(m<=buyLimit && m<=money){
+    public boolean tryBuy(int i, double m) {
+        if (m <= buyLimit[i] && m <= money) {
             addMoney(-m);
             return true;
         }
         return false;
     }
-    
-    public boolean trySell(double m){
-        if(m>=sellLimit){
+    public boolean trySell(int i, double m) {
+        if (m >= sellLimit[i] && sellLimit[i] != -1) {
             addMoney(m);
             return true;
         }
         return false;
     }
-    public boolean buyTest(double m){
-        return m>=buyLimit && m<=money;
+    public boolean buyTest(int i, double m) {
+        return m <= buyLimit[i] && m <= money;
     }
-    public boolean sellTest(double m){
-        return m<=sellLimit;
+    public boolean sellTest(int i, double m) {
+        return m >= sellLimit[i] && sellLimit[i] != -1;
     }
-    
-    public void mulSellLimit(double mul){
-        sellLimit *= mul;
+    public void mulSellLimit(int i, double mul) {
+        sellLimit[i] *= mul;
     }
-    public void mulBuyLimit(double mul){
-        buyLimit *= mul;
+    public void mulBuyLimit(int i, double mul) {
+        buyLimit[i] *= mul;
     }
-    
 }

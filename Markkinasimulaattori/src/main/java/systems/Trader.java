@@ -5,6 +5,9 @@
  */
 package systems;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import people.Person;
 
 /**
@@ -13,28 +16,55 @@ import people.Person;
  */
 public class Trader {
     
-    Person buyer;
-    Person seller;
+    List<Person> buyers;
+    List<Person> sellers;
+    double[] costs;
     
-    public Trader(Person b, Person s){
-        buyer = b;
-        seller = s;
+    public Trader(List<Person> b, List<Person> s) {
+        buyers = b;
+        sellers = s;
     }
     
-    public void trade(double startPrize){
+    public void setProdCosts(double[] prodCosts) {
+        costs = prodCosts;
+    }
+    
+    public void trade(int i) {
         
-        if(seller.sellTest(startPrize)){
-            if(buyer.tryBuy(startPrize)){
-                
-                
-                seller.trySell(startPrize);
-                buyer.mulBuyLimit(0.95);
-                seller.mulSellLimit(1.05);
-            } else {
-                
-                buyer.mulBuyLimit(1.05);
-                seller.mulSellLimit(0.95);
+        List<Person> tempBuyers = new ArrayList<>();
+        tempBuyers.addAll(buyers);
+        List<Person> tempSellers = new ArrayList<>();
+        tempSellers.addAll(sellers);
+        
+        Collections.shuffle(tempBuyers);
+        Collections.shuffle(tempSellers);
+        
+        for (int b = 0; b < tempBuyers.size(); b++) {
+            for (int s = 0; s < tempSellers.size(); s++) {
+                if (this.transaction(tempBuyers.get(b), tempSellers.get(s), i, tempSellers.get(s).getSellLimit(i))) {
+                    tempBuyers.remove(b);
+                    tempSellers.remove(s);
+                }
             }
         }
+        
+        tempBuyers.forEach(a -> a.mulBuyLimit(i, 1.05));
+        tempSellers.forEach(a -> a.mulSellLimit(i, 0.95));
     }
+    
+    private boolean transaction(Person buyer, Person seller, int i, double price) {
+        if (seller.sellTest(i, price)) {
+            if (buyer.tryBuy(i, price)) {
+                seller.trySell(i, price);
+                buyer.mulBuyLimit(i, 0.95);
+                seller.mulSellLimit(i, 1.05);
+                if (costs != null) {
+                    seller.addMoney(-costs[i]);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }
