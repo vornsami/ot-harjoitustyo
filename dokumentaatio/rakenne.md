@@ -1,7 +1,7 @@
 
 Ohjelma rakentuu toistaiseksi seuraavanlaisesti:
 
-##systems##
+__systems__
 
 - Run
 
@@ -9,17 +9,26 @@ Ohjelma rakentuu toistaiseksi seuraavanlaisesti:
 
 Systems-kansio hallitsee ohjelman suoritusta ja logiikkaa. Run käynnistää ohjelman ja hallitsee sen suoritusta. Trader käsittelee kaupan logiikkaa.
 
-##people##
+__people__
+
+- MarketActor
 
 - Person
 
-People-kansiossa on markkinoilla toimijoihin liittyvät metodit. Person rakenteena kuvaa markkinoilla toimivia ihmisiä.
+- Company
+
+People-kansiossa on markkinoilla toimijoihin liittyvät metodit. MarketActor määrittelee markkinoiden toimijoiden toiminnot. 
+
+Person rakenteena kuvaa markkinoilla toimivia ihmisiä. Company-luokka toimii markkinoilla myyjänä. Sillä on alaisuudessaan Person-luokkia, joille maksetaan palkkaa. 
+
+Person ja Company laajentavat MarketActor-luokkaa.
+
+__objects__
+
+- Item
+
+- ItemType
+
+Objects-kansiossa on markkinoilla myytäviin tavaroihin liittyvät tiedot. Item viittaa myytävään tavaraan. ItemType on taavran tyypin enum-luokka.
 
 
-__##Suunnitteilla olevat rakenteet:##__
-
-##people##
-
-- Corporation
-
-Corporation-luokka toimii markkinoilla myyjänä. Sillä on alaisuudessaan Person-luokkia, joille maksetaan palkkaa. 
