@@ -6,7 +6,9 @@
 package systems;
 
 import java.util.ArrayList;
-import people.Person;
+import actors.*;
+import objects.Item;
+import static objects.ItemType.*;
 
 /**
  *
@@ -16,26 +18,37 @@ public class Run {
 
     public static void main(String[] args) {
         
-        Person buyer1 = new Person(100.0);
-        Person buyer2 = new Person(200.0);
-        Person seller = new Person(100.0);
+        Person person1 = new Person(100.0);
+        Person person2 = new Person(200.0);
+        Person person3 = new Person(100.0);
         
-        buyer1.setAllBuyLimits(new double[]{10.0});
-        buyer2.setAllBuyLimits(new double[]{20.0});
-        seller.setAllSellLimits(new double[]{4.0});
+        person1.setAllBuyLimits(new double[]{10});
+        person2.setAllBuyLimits(new double[]{20.0});
+        person3.setAllBuyLimits(new double[]{15.0});
         
-        ArrayList<Person> buyers =  new ArrayList<>();
-        buyers.add(buyer1);
-        buyers.add(buyer2);
-        ArrayList<Person> sellers =  new ArrayList<>();
-        sellers.add(seller);
-        Trader trader = new Trader(buyers, sellers);
+        Item[] items = new Item[]{new Item("Product", NECESSITY)};
         
+        ArrayList<Person> people =  new ArrayList<>();
+        people.add(person1);
+        people.add(person2);
+        people.add(person3);
         
+        Company company = new Company(0.0, new double[]{10}, new double[]{10}, people, 5);
+        company.setAllProdCounts(new int[]{10});
+        
+        ArrayList<MarketActor> sellers =  new ArrayList<>();
+        sellers.add(company);
+        Trader trader = new Trader(people, sellers, items);
         
         for (int i = 0; i < 100; i++) {
+            company.addProdCount(0, 2);
+            company.payWages();
             trader.trade(0);
-            System.out.println(i + ": Buyer1: " + buyer1.getBuyLimit(0) + " m: " + buyer1.getMoney() + ",  Buyer2: " + buyer2.getBuyLimit(0) + " m: " + buyer2.getMoney() + ", Seller: " + seller.getSellLimit(0));
+            System.out.println("Round " + i + ": ");
+            System.out.print("People ready to pay: ");
+            people.forEach(a -> System.out.print(a.getBuyLimit(0) + ", "));
+            System.out.print("Company sells at: " + company.getSellLimit(0));
+            System.out.println();
         }
         
         
