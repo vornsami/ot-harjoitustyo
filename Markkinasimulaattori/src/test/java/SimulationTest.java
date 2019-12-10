@@ -97,7 +97,7 @@ public class SimulationTest {
         Company comp1 = new Company("", 0, 1, 100);
         Company comp2 = new Company("", 0, 1, 100, new double[]{}, new double[]{});
         Company comp3 = new Company("", 0, 1, 100, new double[]{}, new double[]{}, new ArrayList<>());
-        Company comp4 = new Company("", 0, 1, 100, new double[]{}, new double[]{}, new int[]{}, new ArrayList<>(), 50.0);
+        Company comp4 = new Company("", 0, 1, 100, new double[]{}, new double[]{}, new int[]{0}, new ArrayList<>(), 50.0);
         
         Person person = new Person(50);
         comp4.addEmployee(person);
