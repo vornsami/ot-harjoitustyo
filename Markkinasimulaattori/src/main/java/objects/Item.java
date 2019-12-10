@@ -18,10 +18,18 @@ public class Item {
         name = n;
     }
     
+    /**
+     * Returns items ItemType
+     * @return
+     */
     public ItemType getType() {
         return type;
     }
     
+    /**
+     * Returns items name
+     * @return
+     */
     public String getName() {
         return name;
     }

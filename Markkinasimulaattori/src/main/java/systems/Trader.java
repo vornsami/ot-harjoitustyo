@@ -28,6 +28,10 @@ public class Trader {
         items = it;
     }
     
+    /**
+     * Trades given item on the market
+     * @param i Items position on the item list
+     */
     public void trade(int i) {
         
         List<Person> tempBuyers = new ArrayList<>();
