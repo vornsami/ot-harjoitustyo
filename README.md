@@ -10,3 +10,5 @@ Ohjelman tavoitteet ovat löydettävissä [täältä](dokumentaatio/määrittely
 - [Tuntikirjanpito](dokumentaatio/tuntikirjanpito.md)
 
 - [Ohjelman rakenne](dokumentaatio/rakenne.md)
+
+- [Käyttöohje](dokumentaatio/käyttöohje.md)

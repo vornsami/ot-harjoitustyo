@@ -17,7 +17,7 @@ Markkinoilla on eräänlaiset "työmarkkinat", joissa työntekijät siirtyvät y
 ja vähentämään toimintaa mikäli tuotteita jää liialti yli. Yritykset myöskin laskevat palkkojaan mikäli ne eivät ole voitollisia (ehkä myös muista syistä), 
 ja nostavat palkkoja, mikäli ne eivät saa täytettyä tyhjiä työpaikkoja.
 
-Käyttäjä tulee pystymään antamaan parametreja simulaattorille, kuten aloitushinnat ja rahamäärät.
+Käyttäjä tulee pystymään antamaan parametreja simulaattorille, kuten aloitushinnat ja rahamäärät. (Toteutettu)
 Ohjelma visualisoi käyttäjälle hintoja, ja markkinan tilannetta.
 
 

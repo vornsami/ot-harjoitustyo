@@ -31,6 +31,6 @@ __objects__
 
 Objects-kansiossa on markkinoilla myytäviin tavaroihin liittyvät tiedot. Item viittaa myytävään tavaraan. ItemType on taavran tyypin enum-luokka.
 
-![](rakenne.PNG)
+![](rakenne.png)
 
 
