@@ -12,6 +12,7 @@ package objects;
 public class Item {
     ItemType type;
     String name;
+    
     public Item(String n, ItemType t) {
         type = t;
         name = n;

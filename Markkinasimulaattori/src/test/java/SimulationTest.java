@@ -94,10 +94,10 @@ public class SimulationTest {
     }
     @Test
     public void testCompany() {
-        Company comp1 = new Company(100);
-        Company comp2 = new Company(100, new double[]{}, new double[]{});
-        Company comp3 = new Company(100, new double[]{}, new double[]{}, new ArrayList<>());
-        Company comp4 = new Company(100, new double[]{}, new double[]{}, new ArrayList<>(), 50.0);
+        Company comp1 = new Company("", 0, 1, 100);
+        Company comp2 = new Company("", 0, 1, 100, new double[]{}, new double[]{});
+        Company comp3 = new Company("", 0, 1, 100, new double[]{}, new double[]{}, new ArrayList<>());
+        Company comp4 = new Company("", 0, 1, 100, new double[]{}, new double[]{}, new int[]{}, new ArrayList<>(), 50.0);
         
         Person person = new Person(50);
         comp4.addEmployee(person);
@@ -150,7 +150,7 @@ public class SimulationTest {
     public void testTrader() {
         
         ArrayList<Person> b = new ArrayList<>();
-        ArrayList<MarketActor> s = new ArrayList<>();
+        ArrayList<Company> s = new ArrayList<>();
         Item[] items = new Item[1];
         
         Trader trader = new Trader(b, s, items);

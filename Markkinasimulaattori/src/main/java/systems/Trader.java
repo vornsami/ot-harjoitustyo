@@ -19,10 +19,10 @@ import static objects.ItemType.*;
 public class Trader {
     
     List<Person> buyers;
-    List<MarketActor> sellers;
+    List<Company> sellers;
     Item[] items;
     
-    public Trader(List<Person> b, List<MarketActor> s, Item[] it) {
+    public Trader(List<Person> b, List<Company> s, Item[] it) {
         buyers = b;
         sellers = s;
         items = it;
@@ -36,14 +36,16 @@ public class Trader {
         tempSellers.addAll(sellers);
         
         Item tradedItem = items[i];
-        
         switch (tradedItem.getType()) {
             case GENERAL:
                 this.generalTrade(tempBuyers, tempSellers, i);
+                break;
             case NECESSITY:
                 this.necessityTrade(tempBuyers, tempSellers, i);
+                break;
             case LUXURY:
                 this.luxuryTrade(tempBuyers, tempSellers, i);
+                break;
                 
         }
     }
@@ -81,7 +83,7 @@ public class Trader {
         
         List<Person> buys = new ArrayList<>();
         buy.forEach(a -> {
-            if (a.getBuyLimit(i) < a.getMoney()) {
+            if (a.getBuyLimit(i) < a.getMoney() && a.getBuyLimit(i) < 2000000000) {
                 a.mulBuyLimit(i, 1.05);
                 
                 buys.add(a);
@@ -128,6 +130,7 @@ public class Trader {
                     if (sell.get(s).getProdCount(i) <= 0){
                         sell.remove(s);
                     }
+                    break;
                 }
             }
         }

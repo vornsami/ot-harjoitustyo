@@ -14,5 +14,10 @@ Tunteja käytetty
 
   - ~2,5h Tehtiin muutoksia kauppaan; lisättiinn eri tuotetyypit, lisättiin yritykset, tehtiin valmisteluja "työmarkkinoiden" luontiin.
   - ~1h Laajennettiin testaukset, checkstyle-korjaukset
+
+- viikko 6:
+
+ - ~5h visuaalisen käyttöliittymän tekeminen
+ - ~1h bugikorjauksia
   
   

@@ -18,40 +18,55 @@ public class Company extends MarketActor {
     List<Person> employees;
     int targetEmployees;
     double wages;
+    String name;
+    int produce;
+    double efficiency;
     
-    
-    public Company(double m) {
+    public Company(String n, int p, double eff, double m) {
         super(m);
         employees = new ArrayList<>();
         targetEmployees = 0;
         wages = 0;
-                
+        name = n;
+        produce = p;
+        efficiency = eff;
     }
     
-    public Company(double m, double[] b, double[] s) {
+    public Company(String n, int p, double eff, double m, double[] b, double[] s) {
         super(m, b, s);
         employees = new ArrayList<>();
         targetEmployees = 0;
         wages = 0;
+        name = n;
+        produce = p;
+        efficiency = eff;
     }
     
-    public Company(double m, double[] b, double[] s, List<Person> e) {
+    public Company(String n, int p, double eff, double m, double[] b, double[] s, List<Person> e) {
         super(m, b, s);
         employees = e;
         targetEmployees = employees.size();
         wages = 0;
+        name = n;
+        produce = p;
+        efficiency = eff;
     }
-    public Company(double m, double[] b, double[] s, List<Person> e, double w) {
+    public Company(String n, int p, double eff, double m, double[] b, double[] s, int[] prd, List<Person> e, double w) {
         super(m, b, s);
         employees = e;
         targetEmployees = employees.size();
         wages = w;
+        name = n;
+        produce = p;
+        prodCounts = prd;
+        efficiency = eff;
     }
     
     
     public boolean payWages() {
         if (this.addMoney(-employees.size() * wages)) {
             employees.forEach(a -> a.addMoney(wages));
+            this.prodCounts[produce] += employees.size() * efficiency;
             return true;
         }
         return false;
@@ -71,6 +86,9 @@ public class Company extends MarketActor {
     
     public void addEmployee(Person e) {
         employees.add(e);
+    }
+    public List<Person> getEmployees() {
+        return employees;
     }
     
     public void removeEmployee(int i) {
@@ -100,4 +118,11 @@ public class Company extends MarketActor {
         return employees.size() > targetEmployees;
     }
     
+    public String getName() {
+        return name;
+    }
+    
+    public int getProd(){
+        return produce;
+    }
 }
