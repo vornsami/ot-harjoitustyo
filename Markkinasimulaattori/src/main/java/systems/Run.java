@@ -251,10 +251,22 @@ public class Run extends Application {
         
         Trader trader = new Trader(people, companies, itemList);
         stage.hide();
+        int day = 0;
         while (true) {
+            System.out.println("Avarage prices for day " + day + ":");
             for (int i = 0; i < itemList.length; i++) {
                 trader.trade(i);
+                int p = i;
+                double average = companies.stream()
+                        .filter(a -> a.getProd() == p)
+                        .mapToDouble(a -> a.getSellLimit(p))
+                        .average()
+                        .getAsDouble();
+                System.out.println(itemList[i].getName()+ ": " + average);
             }
+            System.out.println();
+            companies.forEach(a -> a.payWages());
+            day++;
         }
     }
     
