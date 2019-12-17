@@ -21,6 +21,7 @@ public class Company extends MarketActor {
     String name;
     int produce;
     double efficiency;
+    double moneyBefore;
     
     public Company(String n, int p, double eff, double m) {
         super(m);
@@ -30,6 +31,7 @@ public class Company extends MarketActor {
         name = n;
         produce = p;
         efficiency = eff;
+        moneyBefore = m;
     }
     
     public Company(String n, int p, double eff, double m, double[] b, double[] s) {
@@ -40,6 +42,7 @@ public class Company extends MarketActor {
         name = n;
         produce = p;
         efficiency = eff;
+        moneyBefore = m;
     }
     
     public Company(String n, int p, double eff, double m, double[] b, double[] s, List<Person> e) {
@@ -50,6 +53,12 @@ public class Company extends MarketActor {
         name = n;
         produce = p;
         efficiency = eff;
+        moneyBefore = m;
+        
+        employees.forEach(a -> {
+            a.wages = wages;
+            a.company = this;
+        });
     }
     public Company(String n, int p, double eff, double m, double[] b, double[] s, int[] prd, List<Person> e, double w) {
         super(m, b, s);
@@ -60,6 +69,12 @@ public class Company extends MarketActor {
         produce = p;
         prodCounts = prd;
         efficiency = eff;
+        moneyBefore = m;
+        
+        employees.forEach(a -> {
+            a.wages = wages;
+            a.company = this;
+        });
     }
     
     /**
@@ -81,6 +96,7 @@ public class Company extends MarketActor {
      */
     public void setWages(double w) {
         wages = w;
+        employees.forEach(a -> a.wages = wages);
     }
     
     /**
@@ -97,6 +113,7 @@ public class Company extends MarketActor {
      */
     public void mulWages(double m) {
         wages *= m;
+        employees.forEach(a -> a.wages = wages);
     }
     
     /**
@@ -105,6 +122,8 @@ public class Company extends MarketActor {
      */
     public void addEmployee(Person e) {
         employees.add(e);
+        e.wages = wages;
+        e.company = this;
     }
 
     /**
@@ -121,10 +140,23 @@ public class Company extends MarketActor {
      */
     public void removeEmployee(int i) {
         if (employees.size() > i) {
+            employees.get(i).toggleEmployed();
+            employees.get(i).company = null;
             employees.remove(i);
         }
     }
     
+    public void removeEmployee(Person person) {
+        this.removeEmployee(employees.indexOf(person));
+    }
+    /**
+     * Removes a random employee from the list of employees
+     */
+    public void removeRandomEmployee() {
+        if (employees.size() > 0) {
+            this.removeEmployee((new Random()).nextInt(employees.size()));
+        }
+    }
     /**
      * Sets the amount of employees the company targets to have
      * @param i amount to be setted
@@ -138,17 +170,14 @@ public class Company extends MarketActor {
      * @param i amount to be added
      */
     public void addTargetEmployees(int i){
-        if (-i <= targetEmployees) {
-            targetEmployees += i;
+        
+        targetEmployees += i;
+        if (targetEmployees < 0) {
+            targetEmployees = 0;
         }
     }
     
-    /**
-     * Removes a random employee from the list of employees
-     */
-    public void removeRandomEmployee() {
-        this.removeEmployee((new Random()).nextInt(employees.size()));
-    }
+    
     
     /**
      * Returns boolean value representing if there are less employees than the target
@@ -180,5 +209,20 @@ public class Company extends MarketActor {
      */
     public int getProd(){
         return produce;
+    }
+    @Override
+    public void mulSellLimit(int i, double mul) {
+        sellLimit[i] *= mul;
+    }
+    
+    public boolean operatesAtLoss() {
+        return moneyBefore > money;
+    }
+    
+    public double getPrevMoney() {
+        return this.moneyBefore;
+    }
+    public void moneyBenchMark() {
+        moneyBefore = money;
     }
 }

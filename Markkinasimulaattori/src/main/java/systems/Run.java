@@ -18,6 +18,8 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraintsBuilder;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -52,6 +54,8 @@ public class Run extends Application {
         stage.setScene(scene);
         stage.show();
     }
+    
+    // Before simulation starts
     
     private void createStart(AnchorPane pane, Stage stage){
         VBox optionArea = new VBox();
@@ -160,12 +164,12 @@ public class Run extends Application {
         VBox effSliderHolder = new VBox();
         Slider effSlider = new Slider();
         effSlider.setMin(0);
-        effSlider.setMax(10);
-        effSlider.setValue(2);
+        effSlider.setMax(100);
+        effSlider.setValue(10);
         effSlider.setShowTickMarks(true);
         effSlider.setShowTickLabels(true);
-        effSlider.setMinorTickCount(1);
-        effSlider.setMajorTickUnit(2);
+        effSlider.setMinorTickCount(9);
+        effSlider.setMajorTickUnit(10);
         effSlider.setSnapToTicks(true);
         
         Label effTitle = new Label("Efficiency: ");
@@ -225,6 +229,8 @@ public class Run extends Application {
         );
     }
     
+    // Starting the simulation
+    
     private void startSimulation(VBox marketActors, VBox productBox, Stage stage) {
         
         List<Person> people = new ArrayList<>();
@@ -247,27 +253,8 @@ public class Run extends Application {
             people.forEach(a -> a.setBuyLimit(p, average));
             
         }
+        this.simulation(stage, people, companies, itemList);
         
-        
-        Trader trader = new Trader(people, companies, itemList);
-        stage.hide();
-        int day = 0;
-        while (true) {
-            System.out.println("Avarage prices for day " + day + ":");
-            for (int i = 0; i < itemList.length; i++) {
-                trader.trade(i);
-                int p = i;
-                double average = companies.stream()
-                        .filter(a -> a.getProd() == p)
-                        .mapToDouble(a -> a.getSellLimit(p))
-                        .average()
-                        .getAsDouble();
-                System.out.println(itemList[i].getName()+ ": " + average);
-            }
-            System.out.println();
-            companies.forEach(a -> a.payWages());
-            day++;
-        }
     }
     
     private List<Company> simulationConverter(VBox marketActors, VBox productBox, Stage stage) {
@@ -329,6 +316,7 @@ public class Run extends Application {
         }
         return itemList;
     }
+    
     private Popup createError() {
         Popup popup = new Popup();
         
@@ -343,5 +331,116 @@ public class Run extends Application {
         popup.getContent().add(content);
         
         return popup;
+    }
+    
+    // In progress
+    
+    private void simulation(Stage stage, List<Person> people, List<Company> companies, Item[] itemList) {
+        Trader trader = new Trader(people, companies, itemList);
+        
+        stage.hide();
+        
+        int day = 0;
+        while (true) {
+            System.out.println("Avarage prices for day " + day + ":");
+            for (int i = 0; i < itemList.length; i++) {
+                trader.trade(i);
+                int p = i;
+                double average = companies.stream()
+                        .filter(a -> a.getProd() == p)
+                        .mapToDouble(a -> a.getSellLimit(p))
+                        .average()
+                        .getAsDouble();
+                System.out.println(itemList[i].getName()+ ": " + average);
+            }
+            System.out.println();
+            
+            companies.forEach(a -> {
+                if (a.seeksMoreEmployees()) {
+                    a.mulWages(1.05);
+                    System.out.println(a.getName() + " raised wages!");
+                }
+                
+                int p = a.getProdCount(a.getProd());
+                if (p > a.getEmployees().size()) {
+                    a.addTargetEmployees(-1);
+                    a.removeRandomEmployee();
+                    System.out.println(a.getName() + " removed employee");
+                } else if (p <= 0 && !a.seeksMoreEmployees()) {
+                    a.addTargetEmployees(1);
+                    System.out.println(a.getName() + " needs more employees");
+                }
+                if (a.operatesAtLoss()) {
+                    a.mulWages(0.95);
+                    System.out.println(a.getName() + " operates at a loss, so they lowered wages!!");
+                }
+                a.moneyBenchMark();
+            });
+            
+            people.forEach(a -> {
+                companies.forEach(b -> { 
+                    if (b.seeksMoreEmployees()) {
+                        if (!a.isEmployed()) {
+                            b.addEmployee(a);
+                            System.out.println(b.getName() + " hired an employee");
+                        } else if (b.getWages() > a.getWages() && a.getCompany() != null) {
+                            System.out.println(b.getName() + " hired an employee from " + a.getCompany().getName() + "!");
+                            b.addEmployee(a);
+                            a.getCompany().removeEmployee(a);
+                        }
+                    }
+                });
+            });
+            
+            System.out.println("Number of people unemployed: " + people.stream().filter(a -> !a.isEmployed()).count());
+            System.out.println();
+            
+            companies.forEach(a -> {
+                System.out.println(a.getName() + " has " + a.getProdCount(a.getProd()) + " of " + itemList[a.getProd()].getName() + " in storage.");
+            });
+            
+            companies.forEach(a -> {
+                if (!a.payWages()) {
+                    System.out.println(a.getName() + " couldn't afford to pay wages.");
+                }
+            });
+            
+            day++;
+        }
+    }
+    
+    
+    private void setupSimulationUI(Stage stage) {
+        AnchorPane pane = new AnchorPane();
+        Scene scene = new Scene(pane);
+        
+        GridPane graphPane = new GridPane();
+        
+        AnchorPane.setBottomAnchor(graphPane, 100.0);
+        AnchorPane.setTopAnchor(graphPane, 50.0);
+        AnchorPane.setRightAnchor(graphPane,  10.0);
+        AnchorPane.setLeftAnchor(graphPane,  10.0);
+        
+        Label prodTitle = new Label("Products");
+        Label compTitle = new Label("Companies");
+        Label avrgTitle = new Label("Averages");
+        
+        GridPane titlePane = new GridPane();
+        
+        AnchorPane.setTopAnchor(titlePane, 10.0);
+        AnchorPane.setRightAnchor(titlePane,  10.0);
+        AnchorPane.setLeftAnchor(titlePane,  10.0);
+        
+        pane.getChildren().addAll(graphPane, titlePane);
+        
+        titlePane.addRow(0, prodTitle, compTitle, avrgTitle);
+        titlePane.getColumnConstraints().setAll(
+                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
+                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
+                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build()
+        );
+        
+        stage.setScene(scene);
+        stage.show();
     }
 }
