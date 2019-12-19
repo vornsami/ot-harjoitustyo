@@ -1,3 +1,4 @@
+Ohjelma voidaan käynnistää komentokehotteella .jar-tiedostosta komennolla java -jar _tiedostonnimi_.jar
 
 Ohjelma antaa avatessa näkymän, jossa pystytään antaa simulaattorille alkutilanteen.
 
@@ -16,4 +17,5 @@ tuotteisiin, joita ostajien on ostettava oman hyvinvointinsa turvaamiseksi. Täs
 joita ihmiset ostavat vain, mikäli omaavat reilusti rahaa ostamaan NECESSITY-tyypin tuotteita pitkän aikaa.
 Valintalaatikon alla sijaitsee tekstikenttä, johon voi kirjoittaa tuotteen nimen
 
+Oikean alareunan Days-tekstikenttään kirjoitetaan suoritettavien päivien määrä.
 Simulaation voi käynnistää painamalla "Start"-painiketta ruudun oikeasta alakulmasta.

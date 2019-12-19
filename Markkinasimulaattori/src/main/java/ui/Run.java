@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package systems;
+package ui;
 
 import actors.*;
 import java.util.ArrayList;
@@ -18,8 +18,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.ColumnConstraintsBuilder;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -28,7 +26,9 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import objects.Item;
 import objects.ItemType;
+import systems.Trader;
 import static objects.ItemType.*;
+import systems.Simulation;
 
 /**
  *
@@ -57,7 +57,7 @@ public class Run extends Application {
     
     // Before simulation starts
     
-    private void createStart(AnchorPane pane, Stage stage){
+    private void createStart(AnchorPane pane, Stage stage) {
         VBox optionArea = new VBox();
         optionArea.setSpacing(15);
         optionArea.setMaxWidth(170);
@@ -74,12 +74,26 @@ public class Run extends Application {
         AnchorPane.setRightAnchor(marketActors, 90.0);
         AnchorPane.setLeftAnchor(marketActors, 200.0);
         
+        VBox startBox = new VBox();
+        
         Button startButton = new Button("START");
         
-        AnchorPane.setRightAnchor(startButton, 10.0);
-        AnchorPane.setBottomAnchor(startButton, 10.0);
+        Label roundLabel = new Label("Days:");
         
-        pane.getChildren().addAll(optionArea, marketActors, startButton);
+        TextField rounds = new TextField("20");
+        rounds.setTextFormatter(new TextFormatter<String>(t -> {
+            if (t.getText().isEmpty() || !t.getText().matches("\\d+")) {
+                t.setText("");
+            }
+            return t;
+        }));
+        rounds.setMaxWidth(80);
+        startBox.getChildren().addAll(roundLabel, rounds, startButton);
+        
+        AnchorPane.setRightAnchor(startBox, 10.0);
+        AnchorPane.setBottomAnchor(startBox, 10.0);
+        
+        pane.getChildren().addAll(optionArea, marketActors, startBox);
         
         VBox productBox = new VBox();
         
@@ -99,7 +113,7 @@ public class Run extends Application {
         
         optionArea.getChildren().addAll(addCompany, addProduct, productBox);
         
-        startButton.setOnAction(e -> this.startSimulation(marketActors, productBox, stage));
+        startButton.setOnAction(e -> this.startSimulation(marketActors, productBox, startBox, stage));
         
         stage.setHeight(500);
         stage.setWidth(1200);
@@ -189,20 +203,20 @@ public class Run extends Application {
         Label priceLabel = new Label("Starting price:");
         
         TextField price = new TextField("20");
-        price.setTextFormatter( new TextFormatter<String>(t -> {
-                if (t.getText().isEmpty() || !t.getText().matches("\\d+")) {
-                    t.setText("");
-                    
-                }
-                return t;
-            }));
+        price.setTextFormatter(new TextFormatter<String>(t -> {
+            if (t.getText().isEmpty() || !t.getText().matches("\\d+")) {
+                t.setText("");
+            }
+            return t;
+        }));
         price.setMaxWidth(100);
-        priceBox.getChildren().addAll(priceLabel,price);
+        priceBox.getChildren().addAll(priceLabel, price);
         
         // Add all to base
         actorBox.getChildren().addAll(nameField, addEmployee, employeeCount, sliderHolder, productSelect, effSliderHolder, priceBox);
         marketActors.getChildren().add(actorBox);
     }
+    
     private void addEmployeeCount(Text employeeCount) {
         int num = Integer.parseInt(employeeCount.getText());
         num++;
@@ -231,7 +245,7 @@ public class Run extends Application {
     
     // Starting the simulation
     
-    private void startSimulation(VBox marketActors, VBox productBox, Stage stage) {
+    private void startSimulation(VBox marketActors, VBox productBox, VBox startBox, Stage stage) {
         
         List<Person> people = new ArrayList<>();
         List<Company> companies = this.simulationConverter(marketActors, productBox, stage);
@@ -239,6 +253,8 @@ public class Run extends Application {
             people.addAll(a.getEmployees());
         });
         Item[] itemList = this.itemListCreator(productBox);
+        
+        int rounds = this.getRounds(startBox);
         
         people.forEach(a -> a.setAllBuyLimits(new double[itemList.length]));
         
@@ -253,7 +269,9 @@ public class Run extends Application {
             people.forEach(a -> a.setBuyLimit(p, average));
             
         }
-        this.simulation(stage, people, companies, itemList);
+        stage.hide();
+        Simulation simulation = new Simulation(people, companies, itemList);
+        simulation.run(rounds);
         
     }
     
@@ -302,7 +320,7 @@ public class Run extends Application {
         return null;
     }
     
-    private Item[] itemListCreator(VBox productBox){
+    private Item[] itemListCreator(VBox productBox) {
         int prodCount = productBox.getChildren().size();
         Item[] itemList = new Item[prodCount];
         
@@ -315,6 +333,10 @@ public class Run extends Application {
             );
         }
         return itemList;
+    }
+    
+    private int getRounds(VBox startBox) {
+        return Integer.parseInt(((TextField) startBox.getChildren().get(1)).getText());
     }
     
     private Popup createError() {
@@ -331,116 +353,5 @@ public class Run extends Application {
         popup.getContent().add(content);
         
         return popup;
-    }
-    
-    // In progress
-    
-    private void simulation(Stage stage, List<Person> people, List<Company> companies, Item[] itemList) {
-        Trader trader = new Trader(people, companies, itemList);
-        
-        stage.hide();
-        
-        int day = 0;
-        while (true) {
-            System.out.println("Avarage prices for day " + day + ":");
-            for (int i = 0; i < itemList.length; i++) {
-                trader.trade(i);
-                int p = i;
-                double average = companies.stream()
-                        .filter(a -> a.getProd() == p)
-                        .mapToDouble(a -> a.getSellLimit(p))
-                        .average()
-                        .getAsDouble();
-                System.out.println(itemList[i].getName()+ ": " + average);
-            }
-            System.out.println();
-            
-            companies.forEach(a -> {
-                if (a.seeksMoreEmployees()) {
-                    a.mulWages(1.05);
-                    System.out.println(a.getName() + " raised wages!");
-                }
-                
-                int p = a.getProdCount(a.getProd());
-                if (p > a.getEmployees().size()) {
-                    a.addTargetEmployees(-1);
-                    a.removeRandomEmployee();
-                    System.out.println(a.getName() + " removed employee");
-                } else if (p <= 0 && !a.seeksMoreEmployees()) {
-                    a.addTargetEmployees(1);
-                    System.out.println(a.getName() + " needs more employees");
-                }
-                if (a.operatesAtLoss()) {
-                    a.mulWages(0.95);
-                    System.out.println(a.getName() + " operates at a loss, so they lowered wages!!");
-                }
-                a.moneyBenchMark();
-            });
-            
-            people.forEach(a -> {
-                companies.forEach(b -> { 
-                    if (b.seeksMoreEmployees()) {
-                        if (!a.isEmployed()) {
-                            b.addEmployee(a);
-                            System.out.println(b.getName() + " hired an employee");
-                        } else if (b.getWages() > a.getWages() && a.getCompany() != null) {
-                            System.out.println(b.getName() + " hired an employee from " + a.getCompany().getName() + "!");
-                            b.addEmployee(a);
-                            a.getCompany().removeEmployee(a);
-                        }
-                    }
-                });
-            });
-            
-            System.out.println("Number of people unemployed: " + people.stream().filter(a -> !a.isEmployed()).count());
-            System.out.println();
-            
-            companies.forEach(a -> {
-                System.out.println(a.getName() + " has " + a.getProdCount(a.getProd()) + " of " + itemList[a.getProd()].getName() + " in storage.");
-            });
-            
-            companies.forEach(a -> {
-                if (!a.payWages()) {
-                    System.out.println(a.getName() + " couldn't afford to pay wages.");
-                }
-            });
-            
-            day++;
-        }
-    }
-    
-    
-    private void setupSimulationUI(Stage stage) {
-        AnchorPane pane = new AnchorPane();
-        Scene scene = new Scene(pane);
-        
-        GridPane graphPane = new GridPane();
-        
-        AnchorPane.setBottomAnchor(graphPane, 100.0);
-        AnchorPane.setTopAnchor(graphPane, 50.0);
-        AnchorPane.setRightAnchor(graphPane,  10.0);
-        AnchorPane.setLeftAnchor(graphPane,  10.0);
-        
-        Label prodTitle = new Label("Products");
-        Label compTitle = new Label("Companies");
-        Label avrgTitle = new Label("Averages");
-        
-        GridPane titlePane = new GridPane();
-        
-        AnchorPane.setTopAnchor(titlePane, 10.0);
-        AnchorPane.setRightAnchor(titlePane,  10.0);
-        AnchorPane.setLeftAnchor(titlePane,  10.0);
-        
-        pane.getChildren().addAll(graphPane, titlePane);
-        
-        titlePane.addRow(0, prodTitle, compTitle, avrgTitle);
-        titlePane.getColumnConstraints().setAll(
-                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
-                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build(),
-                ColumnConstraintsBuilder.create().percentWidth(100/3.0).build()
-        );
-        
-        stage.setScene(scene);
-        stage.show();
     }
 }

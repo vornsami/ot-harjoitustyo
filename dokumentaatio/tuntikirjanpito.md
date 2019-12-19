@@ -19,5 +19,9 @@ Tunteja käytetty
 
  - ~5h visuaalisen käyttöliittymän tekeminen
  - ~1h bugikorjauksia
+
+-viikko 7
+
+ - ~4h toiminnallisuuden säätämistä
   
   

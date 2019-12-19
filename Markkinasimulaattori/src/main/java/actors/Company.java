@@ -161,7 +161,7 @@ public class Company extends MarketActor {
      * Sets the amount of employees the company targets to have
      * @param i amount to be setted
      */
-    public void setTargetEmployees(int i){
+    public void setTargetEmployees(int i) {
         targetEmployees = i;
     }
 
@@ -169,7 +169,7 @@ public class Company extends MarketActor {
      * Adds given number to the amount of employees
      * @param i amount to be added
      */
-    public void addTargetEmployees(int i){
+    public void addTargetEmployees(int i) {
         
         targetEmployees += i;
         if (targetEmployees < 0) {
@@ -207,7 +207,7 @@ public class Company extends MarketActor {
      * return wich product the company produces
      * @return
      */
-    public int getProd(){
+    public int getProd() {
         return produce;
     }
     @Override

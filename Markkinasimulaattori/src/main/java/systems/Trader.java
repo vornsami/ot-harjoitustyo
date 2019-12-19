@@ -131,7 +131,7 @@ public class Trader {
             for (int s = 0; s < sell.size(); s++) {
                 if (this.transaction(buy.get(b), sell.get(s), i, sell.get(s).getSellLimit(i))) {
                     buy.remove(b);
-                    if (sell.get(s).getProdCount(i) <= 0){
+                    if (sell.get(s).getProdCount(i) <= 0) {
                         sell.remove(s);
                     }
                     break;
