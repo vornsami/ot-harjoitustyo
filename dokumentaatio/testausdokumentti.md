@@ -9,7 +9,7 @@ Paketissa "actors" testataan "MarketActor"-luokan toiminta sitä laajentavan "Pe
 
 Ohjelma saavuttaa testeillä 89% testikattavuuden ja 75% haaraumakattavuuden.
 
-![](testikattavuus.png)
+![](testikattavuus.PNG)
 
 ------
 
