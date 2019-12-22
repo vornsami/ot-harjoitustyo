@@ -18,3 +18,5 @@ Ohjelman tavoitteet ovat löydettävissä [täältä](dokumentaatio/määrittely
 
 
 [__Releases__](https://github.com/vornsami/ot-harjoitustyo/releases)
+
+- [Uusin release](https://github.com/vornsami/ot-harjoitustyo/releases/tag/1.0)
