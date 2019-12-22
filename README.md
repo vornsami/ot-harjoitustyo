@@ -13,4 +13,6 @@ Ohjelman tavoitteet ovat löydettävissä [täältä](dokumentaatio/määrittely
 
 - [Käyttöohje](dokumentaatio/käyttöohje.md)
 
-#[__Uusin Release__](releases)
+
+
+[__Releases__](https://github.com/vornsami/ot-harjoitustyo/releases)

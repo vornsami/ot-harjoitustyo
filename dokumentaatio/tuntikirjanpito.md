@@ -23,5 +23,6 @@ Tunteja käytetty
 -viikko 7
 
  - ~4h toiminnallisuuden säätämistä
+ - ~2h rakenteen muokkausta
   
   

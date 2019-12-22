@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -246,33 +247,40 @@ public class Run extends Application {
     // Starting the simulation
     
     private void startSimulation(VBox marketActors, VBox productBox, VBox startBox, Stage stage) {
-        
-        List<Person> people = new ArrayList<>();
-        List<Company> companies = this.simulationConverter(marketActors, productBox, stage);
-        companies.forEach(a -> {
-            people.addAll(a.getEmployees());
-        });
-        Item[] itemList = this.itemListCreator(productBox);
-        
-        int rounds = this.getRounds(startBox);
-        
-        people.forEach(a -> a.setAllBuyLimits(new double[itemList.length]));
-        
-        for (int i = 0; i < itemList.length; i++) {
-            int p = i;
-            double average = companies.stream()
-                    .filter(a -> a.getProd() == p)
-                    .mapToDouble(a -> a.getSellLimit(p))
-                    .average()
-                    .getAsDouble();
-            
-            people.forEach(a -> a.setBuyLimit(p, average));
-            
+        try {
+            List<Person> people = new ArrayList<>();
+            List<Company> companies = this.simulationConverter(marketActors, productBox, stage);
+            companies.forEach(a -> {
+                people.addAll(a.getEmployees());
+            });
+            Item[] itemList = this.itemListCreator(productBox);
+
+            int rounds = this.getRounds(startBox);
+
+            people.forEach(a -> a.setAllBuyLimits(new double[itemList.length]));
+
+            for (int i = 0; i < itemList.length; i++) {
+                int p = i;
+
+                double average = companies.stream()
+                        .filter(a -> a.getProd() == p)
+                        .mapToDouble(a -> a.getSellLimit(p))
+                        .average()
+                        .getAsDouble();
+                people.forEach(a -> a.setBuyLimit(p, average));
+
+
+
+
+
+            }
+            stage.hide();
+            Simulation simulation = new Simulation(people, companies, itemList);
+            simulation.run(rounds);
+        } catch (Exception e) {
+            Popup popup = this.createError();
+            popup.show(stage);
         }
-        stage.hide();
-        Simulation simulation = new Simulation(people, companies, itemList);
-        simulation.run(rounds);
-        
     }
     
     private List<Company> simulationConverter(VBox marketActors, VBox productBox, Stage stage) {
@@ -343,13 +351,14 @@ public class Run extends Application {
         Popup popup = new Popup();
         
         VBox content = new VBox();
-        content.setStyle(" -fx-background-color: white;");
+        content.setStyle(" -fx-background-color: red;");
         
         Button button = new Button("Close");
         button.setOnAction(e -> popup.hide());
         
         content.getChildren().addAll(new Text("There was an error"), button);
-        
+        content.setSpacing(5);
+        content.setAlignment(Pos.CENTER);
         popup.getContent().add(content);
         
         return popup;

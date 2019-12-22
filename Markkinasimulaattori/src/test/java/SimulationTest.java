@@ -89,20 +89,20 @@ public class SimulationTest {
     @Test
     public void testPersonGeneral() {
         
-        Person person2 = new Person(0.0, new double[]{7.0} , new double[]{5.0});
+        Person person = new Person(0.0, new double[]{7.0} , new double[]{5.0});
         
-        assertEquals(7.0,person2.getBuyLimit(0),0);
-        assertEquals(5.0,person2.getSellLimit(0),0);
+        assertEquals(7.0,person.getBuyLimit(0),0);
+        assertEquals(5.0,person.getSellLimit(0),0);
         
-        person2.setAllBuyLimits(new double[]{8.0});
-        person2.setAllSellLimits(new double[]{10.0});
+        person.setAllBuyLimits(new double[]{8.0});
+        person.setAllSellLimits(new double[]{10.0});
         
-        assertEquals(8.0,person2.getAllBuyLimits()[0],0);
-        assertEquals(10.0,person2.getAllSellLimits()[0],0);
+        assertEquals(8.0,person.getAllBuyLimits()[0],0);
+        assertEquals(10.0,person.getAllSellLimits()[0],0);
         
-        assertEquals(0.0,person2.getMoney(),0);
-        person2.setMoney(12.0);
-        assertEquals(12.0,person2.getMoney(),0);
+        assertEquals(0.0,person.getMoney(),0);
+        person.setMoney(12.0);
+        assertEquals(12.0,person.getMoney(),0);
     }
     
     @Test
